@@ -26,14 +26,13 @@ class Bot:
             listen=self._url,
             port=self._port,
             url_path=self._token,
-            key=self._private_key,
-            cert=self._certificate,
         )
         u.bot.set_webhook(
             '{}/{}'.format(
                 self._webhook_url,
                 self._token,
-            )
+            ),
+            certificate=open(self._certificate, 'rb')
         )
         logging.warning('Bot Running~')
         u.idle()
