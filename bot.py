@@ -28,7 +28,6 @@ class Bot:
             url_path=self._token,
             key=self._private_key,
             cert=self._certificate,
-            webhook_url='https://example.com:8443/TOKEN'
         )
         u.bot.set_webhook(
             '{}/{}'.format(
