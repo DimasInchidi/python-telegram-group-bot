@@ -10,11 +10,13 @@ class Bot:
     off_topic_group_id = -1001119512908
     python_group_id = -1001050982793
 
-    def __init__(self, token, url, webhook_url, port=8000, workers=4):
+    def __init__(self, token, url, webhook_url, private_key, certificate, port=8000, workers=4):
         self._webhook_url = webhook_url
         self._token = token
         self._url = url
         self._port = port
+        self._private_key = private_key
+        self._certificate = certificate
         self._updater = Updater(token, workers=workers)
         self._init_handlers()
 
@@ -24,6 +26,9 @@ class Bot:
             listen=self._url,
             port=self._port,
             url_path=self._token,
+            key=self._private_key,
+            cert=self._certificate,
+            webhook_url='https://example.com:8443/TOKEN'
         )
         u.bot.set_webhook(
             '{}/{}'.format(
