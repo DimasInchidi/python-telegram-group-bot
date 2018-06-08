@@ -7,15 +7,15 @@ from bot_actions.offtopic_forwarder import offtopic_forwarder
 
 
 class Bot:
-    # python_group_id = -1001050982793
-    # python_off_topic_group_id = -1001119512908
+    python_group_id = -1001050982793
+    python_off_topic_group_id = -1001119512908
     python_admin_group_id = -1001263722667
     bot_sandbox_group = -1001234230832
-    # development environtment
-    python_group_id = -1001234230832
-    python_off_topic_group_id = -1001110875753
 
-    def __init__(self, token, url, webhook_url, private_key, certificate, port, workers=4):
+    def __init__(self, token, url, webhook_url, private_key, certificate, port, workers=4, debug=False):
+        if debug:
+            self.python_group_id = -1001234230832
+            self.python_off_topic_group_id = -1001110875753
         self._webhook_url = webhook_url
         self._token = token
         self._url = url

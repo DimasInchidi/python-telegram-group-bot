@@ -1,8 +1,8 @@
 import re
 
-from telegram import Message, TelegramError
+from telegram import TelegramError
 
-from utils.chat_member_status import can_delete, can_restrict_members
+from utils.chat_member_status import can_delete
 
 
 def is_sent_by_admin(message):

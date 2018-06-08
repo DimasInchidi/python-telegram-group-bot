@@ -5,11 +5,11 @@ from decouple import config
 import logging
 
 if __name__ == '__main__':
+    DEBUG = config("DEBUG", default=False, cast=bool)
     logging.basicConfig(
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-        level=logging.DEBUG
+        level=logging.DEBUG if DEBUG else logging.INFO
     )
-
     token = config("TOKEN", cast=str)
     webhook_url = config('WEBHOOK_URL', cast=str)
     port = config('PORT', default=5000, cast=int)
@@ -22,6 +22,6 @@ if __name__ == '__main__':
 
     bot = Bot(
         token, url, webhook_url, port=port, workers=workers,
-        private_key=private_key, certificate=certificate
+        private_key=private_key, certificate=certificate, debug=DEBUG
     )
     bot.run()
