@@ -63,7 +63,9 @@ class Bot:
             update.effective_message.reply_text("Coming soon~")
         else:
             if update.message.chat_id not in (
-                    self.python_group_id, self.python_off_topic_group_id, self.python_admin_group_id):
+                    self.python_group_id, self.python_off_topic_group_id,
+                    self.python_admin_group_id, self.bot_sandbox_group
+            ):
                 update.effective_message.reply_text("thank you for inviting me here, but i must take my leave :)")
                 bot.leave_chat(update.message.chat_id)
             else:
