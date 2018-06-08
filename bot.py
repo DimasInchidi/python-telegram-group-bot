@@ -7,10 +7,15 @@ from bot_actions.offtopic_forwarder import offtopic_forwarder
 
 
 class Bot:
-    off_topic_group_id = -1001119512908
     python_group_id = -1001050982793
+    python_off_topic_group_id = -1001119512908
+    python_admin_group_id = -1001263722667
+    bot_sandbox_group = -1001234230832
+    # development environtment
+    # python_group_id = -1001234230832
+    # python_off_topic_group_id = -1001110875753
 
-    def __init__(self, token, url, webhook_url, private_key, certificate, port=8000, workers=4):
+    def __init__(self, token, url, webhook_url, private_key, certificate, port, workers=4):
         self._webhook_url = webhook_url
         self._token = token
         self._url = url
@@ -22,27 +27,43 @@ class Bot:
 
     def run(self):
         u = self._updater
-        u.start_webhook(
-            listen=self._url,
-            port=self._port,
-            url_path=self._token,
-        )
-        u.bot.set_webhook(
-            '{}/{}'.format(
-                self._webhook_url,
-                self._token,
-            ),
-            certificate=open(self._certificate, 'rb')
-        )
+        if self._certificate:
+            u.start_webhook(
+                listen=self._url,
+                port=self._port,
+                url_path=self._token,
+                key=self._private_key,
+                cert=self._certificate,
+                webhook_url='{}:{}/{}'.format(self._webhook_url,
+                                              self._port,
+                                              self._token)
+            )
+        else:
+            u.start_webhook(
+                listen=self._url,
+                port=self._port,
+                url_path=self._token,
+            )
+            u.bot.set_webhook(
+                '{}/{}'.format(
+                    self._webhook_url,
+                    self._token,
+                )
+            )
         logging.warning('Bot Running~')
         u.idle()
 
     def echo(self, bot, update):
-        if update.message.chat_id not in (self.python_group_id, self.off_topic_group_id):
-            update.effective_message.reply_text("thank you for inviting me here, but i must take my leave :)")
-            bot.leave_chat(update.message.chat_id)
+        logging.debug(update.message.chat_id)
+        if update.message.chat.type == 'private':
+            update.effective_message.reply_text("Coming soon~")
         else:
-            offtopic_forwarder(bot, update, self.off_topic_group_id)
+            if update.message.chat_id not in (
+                    self.python_group_id, self.python_off_topic_group_id, self.python_admin_group_id):
+                update.effective_message.reply_text("thank you for inviting me here, but i must take my leave :)")
+                bot.leave_chat(update.message.chat_id)
+            else:
+                offtopic_forwarder(bot, update, self.python_off_topic_group_id, self.bot_sandbox_group)
 
     def _init_handlers(self):
         start_handler = CommandHandler("start", handler_start, pass_args=True)

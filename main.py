@@ -7,16 +7,16 @@ import logging
 if __name__ == '__main__':
     logging.basicConfig(
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-        level=logging.INFO
+        level=logging.DEBUG
     )
 
-    token = config("TOKEN")
-    webhook_url = config('WEBHOOK_URL')
+    token = config("TOKEN", cast=str)
+    webhook_url = config('WEBHOOK_URL', cast=str)
     port = config('PORT', default=5000, cast=int)
     url = config('URL', default="127.0.0.1")
     workers = config('WORKERS', default=4, cast=int)
-    private_key = config('PRIVATE_KEY', default=None, cast=str)
-    certificate = config('CERTIFICATE', default=None, cast=str)
+    private_key = config('PRIVATE_KEY', default=None)
+    certificate = config('CERTIFICATE', default=None)
 
     logging.warning('Starting...')
 
